@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # encoding: utf-8
 
 # Configuration:::::::::::::::::::::::::::::::::::::::::::::::::
@@ -13,6 +13,7 @@ require 'coffee-script'
 require 'pp'
 require 'fastimage'
 require 'json'
+require 'dimensions'
 
 # Application:::::::::::::::::::::::::::::::::::::::::::::::::::
 # Handle sass files
@@ -53,6 +54,23 @@ class MyApp < Sinatra::Base
   end
 
   get '/next' do
+    
+    selected_image = MyApp.next_file
+    selected_image = MyApp.next_file while Dimensions.angle(selected_image) != 0
+
+    info = {}
+    info['filename'] = selected_image[8, selected_image.length - 6]
+    width, height = FastImage.size(selected_image)
+    info['degrees'] = Dimensions.angle(selected_image)
+    info['width'] = width
+    info['height'] = height
+    info['title'] = 'Hallo'
+
+    # selected_image[8,selected_image.length-6]
+    info.to_json
+  end
+
+  def  self.next_file
     files = Dir[File.dirname(__FILE__) + '/public/images/**/*'].reject { |fn| File.directory?(fn) }
     new_files = settings.new_files + (files - settings.old_files)
     new_files = new_files.sort { |a, b| File.basename(a) <=> File.basename(b) }
@@ -73,16 +91,9 @@ class MyApp < Sinatra::Base
     settings.old_files = files
     settings.new_files = new_files
 
-    info = {}
-    info['filename'] = selected_image[8, selected_image.length - 6]
-    width, height = FastImage.size(selected_image)
-    info['width'] = width
-    info['height'] = height
-    info['title'] = 'Hallo'
-
-    # selected_image[8,selected_image.length-6]
-    info.to_json
+    selected_image
   end
+
 end
 
 MyApp.run! port: 4567, host: '0.0.0.0' if __FILE__ == $PROGRAM_NAME

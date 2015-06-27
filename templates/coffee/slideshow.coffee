@@ -38,12 +38,21 @@ show_next_image_ken_burns = () ->
 			ymove = - yfactor * Math.floor(height_diff / 4)
 			xmove = -50 * xfactor
 
+		degrees = info.degrees
+		if degrees == 90 || degrees == 270
+			temp = back_width
+			back_width = back_height
+			back_height = temp
+
 		divblock.css("width", window.innerWidth)
 		divblock.css("height", window.innerHeight)
 		divblock.css("background-image", "url("+info.filename+")")
+
 		divblock.css("background-size", back_width+"px "+back_height+"px")
 		divblock.css("background-repeat", "no-repeat")
 		divblock.css("background-position", xoffset+"px "+yoffset+"px")
+		
+		divblock.css("-webkit-transform", "rotate("+degrees+"deg)")
 
 		if window.fade_state == "front"
 			$('#front').fadeOut(2000)
