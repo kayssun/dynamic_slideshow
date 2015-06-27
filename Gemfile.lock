@@ -6,12 +6,16 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.1)
+    dimensions (1.3.0)
     execjs (2.2.1)
     fastimage (1.6.3)
       addressable (~> 2.3, >= 2.3.5)
+    libv8 (3.16.14.9)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
+    ref (1.0.5)
+    sass (3.4.15)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -20,6 +24,9 @@ GEM
       temple (~> 0.6.6)
       tilt (>= 1.3.3, < 2.1)
     temple (0.6.8)
+    therubyracer (0.12.2)
+      libv8 (~> 3.16.14.0)
+      ref
     tilt (1.4.1)
 
 PLATFORMS
@@ -27,7 +34,10 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-script
+  dimensions
   fastimage
+  sass
   sinatra
   slim
+  therubyracer
   tilt (~> 1.4.1)
