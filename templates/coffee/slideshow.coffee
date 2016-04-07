@@ -6,7 +6,7 @@ show_next_image_ken_burns = () ->
 				$("#title").html(info.title)
 				$("#title").show()
 			else
-				#$("#title").hide()
+				$("#title").hide()
 
 		if window.fade_state == "front"
 			divblock = $("#back")
@@ -20,7 +20,6 @@ show_next_image_ken_burns = () ->
 		yfactor = Math.random() < 0.5 ? 1 : -1
 
 		if relation_image > relation_viewport
-			$("#title").html("very wide")
 			back_height = window.innerHeight + 50
 			back_width = Math.floor(info.width * (window.innerHeight/info.height))
 			width_diff = window.innerWidth - back_width
@@ -29,7 +28,6 @@ show_next_image_ken_burns = () ->
 			xmove = xoffset + Math.floor(width_diff / 2)
 			ymove = 0
 		else
-			$("#title").html("very high")
 			back_width = window.innerWidth + 50
 			back_height = Math.floor(info.height * (window.innerWidth/info.width))
 			height_diff = back_height - window.innerHeight
@@ -61,10 +59,10 @@ show_next_image_ken_burns = () ->
 			$('#front').fadeIn(2000)
 			window.fade_state = "front"
 
-		divblock.animate({
-				"background-position-x": xmove,
-				"background-position-y": ymove,
-			}, 7000)
+		#divblock.animate({
+		#		"background-position-x": xmove,
+		#		"background-position-y": ymove,
+		#	}, 7000)
 
 show_next_image = () ->
 	$.get '/next', (data) ->
@@ -86,12 +84,36 @@ show_next_image = () ->
 			$('#front').fadeIn(2000)
 			window.fade_state = "front"
 
+show_next_image_new = () ->
+  $.get '/next', (data) ->
+    info = eval("(" + data + ")")
+
+    old = $(".container")
+
+    container = $('<div/>', {
+      class: 'container',
+    }).hide()
+
+    image = $("<img />", {
+      src: info.filename
+    })
+
+    container.append(image)
+
+    container.appendTo('body').fadeIn(2000, () ->
+      old.hide()
+      old.remove()
+    )
+
+    window.setTimeout(show_next_image_new, 5000)
+
 
 $(document).ready( ->
-	$("#title").html("Lade Slideshow...")
+	#$("#title").html("Lade Slideshow...")
+  $("#title").hide()
 	window.fade_state = "front"
 
-	show_next_image_ken_burns()
+	show_next_image_new()
 
-	window.setInterval(show_next_image_ken_burns, 6000)
+	#window.setInterval(show_next_image_new, 6000)
 )
