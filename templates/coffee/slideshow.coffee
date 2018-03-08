@@ -1,7 +1,7 @@
 show_next_image_ken_burns = () ->
 	$.get '/next', (data) ->
 		info = eval("(" + data + ")");
-		
+
 		if info.title
 				$("#title").html(info.title)
 				$("#title").show()
@@ -49,7 +49,7 @@ show_next_image_ken_burns = () ->
 		divblock.css("background-size", back_width+"px "+back_height+"px")
 		divblock.css("background-repeat", "no-repeat")
 		divblock.css("background-position", xoffset+"px "+yoffset+"px")
-		
+
 		divblock.css("-webkit-transform", "rotate("+degrees+"deg)")
 
 		if window.fade_state == "front"
@@ -67,7 +67,7 @@ show_next_image_ken_burns = () ->
 show_next_image = () ->
 	$.get '/next', (data) ->
 		info = eval("(" + data + ")");
-		
+
 		if window.fade_state == "front"
 			divblock = $("#back")
 		else
@@ -87,7 +87,7 @@ show_next_image = () ->
 show_next_image_new = () ->
   $.get '/next', (data) ->
     info = eval("(" + data + ")")
-
+    timer = null
     old = $(".container")
 
     container = $('<div/>', {
@@ -105,7 +105,8 @@ show_next_image_new = () ->
       old.remove()
     )
 
-    window.setTimeout(show_next_image_new, 5000)
+    window.clearTimeout(timer)
+    timer = window.setTimeout(show_next_image_new, 5000)
 
 
 $(document).ready( ->
